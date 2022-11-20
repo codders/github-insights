@@ -41,3 +41,28 @@ with con:
 
 print("Update complete")
 
+import plotext as plt
+
+def format_date(date):
+    return date.replace("T", " ").replace("Z", "")
+
+with con:
+    res = con.execute("SELECT timestamp, views, uniques FROM views")
+
+data_points = []
+for row in res.fetchall():
+    data_points.append([ format_date(row[0]), row[1], row[2] ])
+plt.date_form(input_form='Y-m-d H:M:S', output_form='d/m/Y')
+
+start = plt.string_to_datetime(format_date(data_points[0][0]))
+end = plt.today_datetime()
+data = [ [r[1], r[2]] for r in data_points ]
+dates = [ r[0] for r in data_points ]
+
+plt.plot(dates, [ d[0] for d in data ])
+plt.plot(dates, [ d[1] for d in data ])
+plt.title("Traffic")
+plt.xlabel("Date")
+plt.ylabel("Impressions")
+plt.show()
+
