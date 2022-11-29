@@ -1,2 +1,2 @@
 .env
-traffic.db
+*.db
