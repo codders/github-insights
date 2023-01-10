@@ -66,8 +66,10 @@ with con:
     res = con.execute("SELECT followed_at, COUNT(login) FROM followers GROUP BY followed_at")
 
 data_points = []
+cumulative = 0
 for row in res.fetchall():
-    data_points.append([ format_date(row[0]), row[1] ])
+    cumulative += row[1]
+    data_points.append([ format_date(row[0]), cumulative ])
 plt.date_form(input_form='Y-m-d', output_form='d/m/Y')
 
 start = plt.string_to_datetime(format_date(data_points[0][0]))
